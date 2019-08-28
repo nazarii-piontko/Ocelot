@@ -1,4 +1,6 @@
-﻿namespace Ocelot.Middleware
+﻿using Microsoft.Extensions.Hosting;
+
+namespace Ocelot.Middleware
 {
     using DependencyInjection;
     using Microsoft.AspNetCore.Builder;
@@ -178,7 +180,6 @@
 
         private static void ConfigureDiagnosticListener(IApplicationBuilder builder)
         {
-            var env = builder.ApplicationServices.GetService<IHostingEnvironment>();
             var listener = builder.ApplicationServices.GetService<OcelotDiagnosticListener>();
             var diagnosticListener = builder.ApplicationServices.GetService<DiagnosticListener>();
             diagnosticListener.SubscribeWithAdapter(listener);

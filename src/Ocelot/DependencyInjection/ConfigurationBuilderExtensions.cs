@@ -1,7 +1,8 @@
+using Microsoft.Extensions.Hosting;
+
 namespace Ocelot.DependencyInjection
 {
     using Configuration.File;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Configuration.Memory;
     using Newtonsoft.Json;
@@ -29,12 +30,12 @@ namespace Ocelot.DependencyInjection
             return builder;
         }
 
-        public static IConfigurationBuilder AddOcelot(this IConfigurationBuilder builder, IHostingEnvironment env)
+        public static IConfigurationBuilder AddOcelot(this IConfigurationBuilder builder, IHostEnvironment env)
         {
             return builder.AddOcelot(".", env);
         }
 
-        public static IConfigurationBuilder AddOcelot(this IConfigurationBuilder builder, string folder, IHostingEnvironment env)
+        public static IConfigurationBuilder AddOcelot(this IConfigurationBuilder builder, string folder, IHostEnvironment env)
         {
             const string primaryConfigFile = "ocelot.json";
 

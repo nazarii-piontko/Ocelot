@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using Ocelot.Configuration.File;
 using Ocelot.Responses;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace Ocelot.Configuration.Repository
 {
@@ -14,7 +14,7 @@ namespace Ocelot.Configuration.Repository
         private static readonly object _lock = new object();
         private const string ConfigurationFileName = "ocelot";
 
-        public DiskFileConfigurationRepository(IHostingEnvironment hostingEnvironment)
+        public DiskFileConfigurationRepository(IHostEnvironment hostingEnvironment)
         {
             _environmentFilePath = $"{AppContext.BaseDirectory}{ConfigurationFileName}{(string.IsNullOrEmpty(hostingEnvironment.EnvironmentName) ? string.Empty : ".")}{hostingEnvironment.EnvironmentName}.json";
 
