@@ -1,7 +1,7 @@
-using Newtonsoft.Json;
 using Ocelot.Configuration.File;
 using Ocelot.Responses;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
@@ -30,14 +30,17 @@ namespace Ocelot.Configuration.Repository
                 jsonConfiguration = System.IO.File.ReadAllText(_environmentFilePath);
             }
 
-            var fileConfiguration = JsonConvert.DeserializeObject<FileConfiguration>(jsonConfiguration);
+            var fileConfiguration = JsonSerializer.Deserialize<FileConfiguration>(jsonConfiguration);
 
             return Task.FromResult<Response<FileConfiguration>>(new OkResponse<FileConfiguration>(fileConfiguration));
         }
 
         public Task<Response> Set(FileConfiguration fileConfiguration)
         {
-            string jsonConfiguration = JsonConvert.SerializeObject(fileConfiguration, Formatting.Indented);
+            string jsonConfiguration = JsonSerializer.Serialize(fileConfiguration, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
 
             lock (_lock)
             {

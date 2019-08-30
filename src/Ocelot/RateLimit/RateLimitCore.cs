@@ -19,7 +19,11 @@ namespace Ocelot.RateLimit
 
         public RateLimitCounter ProcessRequest(ClientRequestIdentity requestIdentity, RateLimitOptions option)
         {
-            RateLimitCounter counter = new RateLimitCounter(DateTime.UtcNow, 1);
+            RateLimitCounter counter = new RateLimitCounter
+            {
+                Timestamp = DateTime.UtcNow,
+                TotalRequests = 1
+            };
             var rule = option.RateLimitRule;
 
             var counterId = ComputeCounterKey(requestIdentity, option);
@@ -37,7 +41,11 @@ namespace Ocelot.RateLimit
                         var totalRequests = entry.Value.TotalRequests + 1;
 
                         // deep copy
-                        counter = new RateLimitCounter(entry.Value.Timestamp, totalRequests);
+                        counter = new RateLimitCounter
+                        {
+                            Timestamp = entry.Value.Timestamp, 
+                            TotalRequests = totalRequests
+                        };
                     }
                 }
             }

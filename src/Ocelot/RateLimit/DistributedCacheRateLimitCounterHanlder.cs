@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json;
 
 namespace Ocelot.RateLimit
 {
@@ -15,7 +15,7 @@ namespace Ocelot.RateLimit
 
         public void Set(string id, RateLimitCounter counter, TimeSpan expirationTime)
         {
-            _memoryCache.SetString(id, JsonConvert.SerializeObject(counter), new DistributedCacheEntryOptions().SetAbsoluteExpiration(expirationTime));
+            _memoryCache.SetString(id, JsonSerializer.Serialize(counter), new DistributedCacheEntryOptions().SetAbsoluteExpiration(expirationTime));
         }
 
         public bool Exists(string id)
@@ -29,7 +29,7 @@ namespace Ocelot.RateLimit
             var stored = _memoryCache.GetString(id);
             if (!string.IsNullOrEmpty(stored))
             {
-                return JsonConvert.DeserializeObject<RateLimitCounter>(stored);
+                return JsonSerializer.Deserialize<RateLimitCounter>(stored);
             }
 
             return null;
